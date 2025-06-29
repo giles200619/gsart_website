@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="Articuated object rigid part segmentation and motion estimation">
+  <meta property="og:title" content="Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians" />
+  <meta property="og:description" content="Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians" />
+  <meta property="og:url" content="https://samsunglabs.github.io/VioLA>
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property=" og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+
+  <meta name="twitter:title" content="Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians">
+  <meta name="twitter:description" content="Articulated object rigid part segmentation and motion estimation">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="part segmentation, motion estimation, articulated objects, 3D Gaussians, computer vision, robotics">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians</title>
+  <link rel="icon" type="image/x-icon" href="">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title"><a style="color:black;">Part Segmentation and Motion Estimation for Articulated Objects with Dynamic 3D Gaussians</a> </h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <span class="author-block">
+                <div class="author-portrait">
+                  <img class="img-fluid mb-3" src="static/images/avatar/junjee.jpeg" alt="">
+                </div>
+                <a href="https://giles200619.github.io/" target="_blank">Jun-Jee Chao<sup>1</sup></a>, 
+              </span>
+              <span class="author-block">
+                <div class="author-portrait">
+                  <img class="img-fluid mb-3" src="static/images/avatar/qingyuan.jpg" alt="">
+                </div>
+                <a href="https://qingyuan-jiang.github.io/" target="_blank">Qingyuan Jiang<sup>1</sup></a>,
+              </span>
+              <span class="author-block">
+                <div class="author-portrait">
+                  <img class="img-fluid mb-3" src="static/images/avatar/isler.jpg" alt="">
+                </div>
+                <a href="https://www.cs.utexas.edu/~isler/" target="_blank">Volkan Isler<sup>2</sup></a>
+              </span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"> <a href="https://rsn.cs.utexas.edu/" target="_blank">Robotics, Sensing and Networks (RSN) Lab</a></span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>University of Minnesota, <sup>2</sup>The University of Texas at Austin </span>
+            </div>
+
+            <!-- ArXiv Link -->
+            <!-- <span class="link-block">
+              <a href="https://arxiv.org/abs/2311.04783" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fas fa-file-pdf"></i>
+                </span>
+                <span>Paper</span>
+              </a> -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2311.04783" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+
+                <!-- Github link
+                <span class="link-block">
+                  <a href="https://github.com/giles200619/viola.git" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span> -->
+                
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <div style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+          <!-- Input Video -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <video poster="" class="teaser-sync-video" autoplay loop controls muted width="500px" style="max-width: 341px;">
+              <source src="static/videos/a1_input.mp4" type="video/mp4">
+            </video>
+            <p style="margin-top: 10px; font-weight: bold; height: 20px; display: flex; align-items: center;">Input</p>
+          </div>
+          
+          <!-- Arrow -->
+          <div style="font-size: 4em; color: #666;">→</div>
+          
+          <!-- Part Segmentation and Motion Video -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <video poster="" class="teaser-sync-video" autoplay loop controls muted width="500px" style="max-width: 341px;">
+              <source src="static/videos/a1_pred.mp4" type="video/mp4">
+            </video>
+            <p style="margin-top: 10px; font-weight: bold; height: 20px; display: flex; align-items: center;">Per-frame Part Segmentation and Motion Estimation</p>
+          </div>
+          
+          <!-- Kinematic Structure Image -->
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <img src="static/images/a1_kinematic.png" alt="Kinematic Structure" width="200px" style="max-width: 200px;">
+            <p style="margin-top: 10px; font-weight: bold; height: 20px; display: flex; align-items: center;">Kinematic Structure Estimation</p>
+          </div>
+        </div>
+
+        <script>
+          // Sync the teaser videos
+          function syncTeaserVideos() {
+            const videos = document.querySelectorAll('.teaser-sync-video');
+            
+            videos.forEach(video => {
+              // Ensure loop attribute is set
+              video.loop = true;
+              
+              video.addEventListener('play', () => {
+                videos.forEach(v => {
+                  if (v !== video && v.paused) v.play();
+                });
+              });
+              video.addEventListener('pause', () => {
+                videos.forEach(v => {
+                  if (v !== video && !v.paused) v.pause();
+                });
+              });
+              video.addEventListener('seeking', () => {
+                videos.forEach(v => {
+                  if (v !== video) v.currentTime = video.currentTime;
+                });
+              });
+              
+              // Ensure videos restart when they end (backup for loop attribute)
+              video.addEventListener('ended', () => {
+                video.currentTime = 0;
+                video.play();
+              });
+            });
+
+            // Wait until all videos are ready and start them together
+            Promise.all(videos.map(v => new Promise(resolve => v.onloadeddata = resolve)))
+              .then(() => {
+                // Start all videos at the same time
+                videos.forEach(v => {
+                  v.play().catch(e => {
+                    console.log('Autoplay blocked, user interaction required');
+                  });
+                });
+              });
+          }
+
+          // Initialize teaser video synchronization
+          syncTeaserVideos();
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title has-text-centered">Abstract</h2>
+        <div class="content has-text-justified">
+          Part segmentation and motion estimation are two fundamental problems for articulated object motion analysis. 
+          In this paper, we present a method to solve these two problems jointly from a sequence of observed point clouds of a single articulated object.
+          The main challenge in our problem setting is that the point clouds are not generated by a fixed set of moving points.
+          Instead, each point cloud in the sequence is an arbitrary sampling of the object surface at that particular time step.
+          Such scenarios occur when the object undergoes major occlusions, or if the dataset is collected using measurements 
+          from multiple sensors asynchronously. In these scenarios, methods that rely on tracking point correspondences are not appropriate.
+          We present an alternative approach based on a compact but effective representation where we
+          represent the object as a collection of simple building blocks modeled as 3D Gaussians.
+          We parameterize the Gaussians with time-dependent rotations, translations, and scales that are shared across all time steps.
+          With our representation, part segmentation can be achieved by building correspondences between
+          the observed points and the Gaussians. Moreover, the transformation of each point across time can be achieved
+          by following the poses of the assigned Gaussian. Experiments show that our method outperforms existing methods
+          that solely rely on finding point correspondences. Additionally, we extend existing datasets
+          to emulate real-world scenarios by considering viewpoint occlusions. We further demonstrate that our method
+          is more robust to missing points as compared to existing approaches on these challenging datasets,
+          even when some parts are not always visible.  Notably, our part segmentation performance
+          outperforms the state-of-the-art method by 13% on point clouds with occlusions.
+          <br>
+        </div>
+      </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title has-text-centered">Method Overview</h2>
+        <div style="text-align: center;">
+          <div style="width: 100%; max-width: 800px; margin: 0 auto; overflow: hidden; height: 300px;">
+            <img src="static/images/Method.png" alt="Method Overview" style="width: 100%; height: auto; transform: translateY(-110px);">
+          </div>
+        </div>
+        <div class="content has-text-justified" style="margin-top: 20px;">
+          <p>
+            Our method represents articulated objects as a collection of 3D Gaussians with time-dependent transformations. 
+            Each Gaussian is parameterized with rotations, translations, and scales that are shared across all time steps, 
+            enabling joint part segmentation and motion estimation from point cloud sequences.
+            During optimization, we randomly sample a point cloud from the sequence in every iteration.
+            For the sampled point cloud, we segment the points by assigning them to the Gaussian with the smallest Mahalanobis distance.
+            We then transform the segmented points to all other time steps using the corresponding Gaussian poses, and enforce similarity 
+            by comparing the transformed point clouds with the observed ones at those time steps.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title has-text-centered">Result on clean point clouds</h2>
+        
+        <div class="table-container">
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th class="has-text-centered">Input</th>
+                <th class="has-text-centered">Pred Gaussians</th>
+                <th class="has-text-centered">Pred Segmentation</th>
+                <th class="has-text-centered">G.T.</th>
+                <th class="has-text-centered">Input vs Pred Motion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/a1/a1_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/a1/a1_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/a1/a1_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/a1/a1_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/a1/a1_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/allegro/allegro_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/allegro/allegro_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/allegro/allegro_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/allegro/allegro_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/allegro/allegro_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/nao/nao_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/nao/nao_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/nao/nao_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/nao/nao_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/nao/nao_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/barrett/barrett_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/barrett/barrett_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/barrett/barrett_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/barrett/barrett_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/barrett/barrett_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <script>
+          // Function to sync videos in a row
+          function syncVideosInRow(className) {
+            const videos = document.querySelectorAll('.' + className);
+            
+            // Sync play and pause
+            videos.forEach(video => {
+              // Ensure loop attribute is set
+              video.loop = true;
+              
+              video.addEventListener('play', () => {
+                videos.forEach(v => {
+                  if (v !== video && v.paused) v.play();
+                });
+              });
+              video.addEventListener('pause', () => {
+                videos.forEach(v => {
+                  if (v !== video && !v.paused) v.pause();
+                });
+              });
+              video.addEventListener('seeking', () => {
+                videos.forEach(v => {
+                  if (v !== video) v.currentTime = video.currentTime;
+                });
+              });
+              
+              // Ensure videos restart when they end (backup for loop attribute)
+              video.addEventListener('ended', () => {
+                video.currentTime = 0;
+                video.play();
+              });
+            });
+
+            // Wait until all videos are ready and start them together
+            Promise.all(videos.map(v => new Promise(resolve => v.onloadeddata = resolve)))
+              .then(() => {
+                // Start all videos at the same time
+                videos.forEach(v => {
+                  v.play().catch(e => {
+                    console.log('Autoplay blocked, user interaction required');
+                  });
+                });
+              });
+          }
+
+          // Sync videos for each row
+          syncVideosInRow('sync-video-row1');
+          syncVideosInRow('sync-video-row2');
+          syncVideosInRow('sync-video-row3');
+          syncVideosInRow('sync-video-row4');
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title has-text-centered">Result on occluded point clouds</h2>
+        
+        <div class="table-container">
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th class="has-text-centered">Input</th>
+                <th class="has-text-centered">Pred Gaussians</th>
+                <th class="has-text-centered">Pred Segmentation</th>
+                <th class="has-text-centered">G.T.</th>
+                <th class="has-text-centered">Input vs Pred Motion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_bolt/bolt_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_bolt/bolt_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_bolt/bolt_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_bolt/bolt_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_bolt/bolt_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_panda/panda_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_panda/panda_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_panda/panda_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_panda/panda_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_panda/panda_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+              <tr>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_icub/icub_input.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_icub/icub_gs.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_icub/icub_pred.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_icub/icub_gt.mp4" type="video/mp4">
+                  </video>
+                </td>
+                <td class="has-text-centered">
+                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                    <source src="static/videos/occluded_icub/icub_overlap.mp4" type="video/mp4">
+                  </video>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <script>
+          // Function to sync videos in a row for occluded results
+          function syncVideosInOccludedRow(className) {
+            const videos = document.querySelectorAll('.' + className);
+            
+            // Sync play and pause
+            videos.forEach(video => {
+              // Ensure loop attribute is set
+              video.loop = true;
+              
+              video.addEventListener('play', () => {
+                videos.forEach(v => {
+                  if (v !== video && v.paused) v.play();
+                });
+              });
+              video.addEventListener('pause', () => {
+                videos.forEach(v => {
+                  if (v !== video && !v.paused) v.pause();
+                });
+              });
+              video.addEventListener('seeking', () => {
+                videos.forEach(v => {
+                  if (v !== video) v.currentTime = video.currentTime;
+                });
+              });
+              
+              // Ensure videos restart when they end (backup for loop attribute)
+              video.addEventListener('ended', () => {
+                video.currentTime = 0;
+                video.play();
+              });
+            });
+
+            // Wait until all videos are ready and start them together
+            Promise.all(videos.map(v => new Promise(resolve => v.onloadeddata = resolve)))
+              .then(() => {
+                // Start all videos at the same time
+                videos.forEach(v => {
+                  v.play().catch(e => {
+                    console.log('Autoplay blocked, user interaction required');
+                  });
+                });
+              });
+          }
+
+          // Sync videos for each row of occluded results
+          syncVideosInOccludedRow('sync-video-occluded-row1');
+          syncVideosInOccludedRow('sync-video-occluded-row2');
+          syncVideosInOccludedRow('sync-video-occluded-row3');
+        </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h2 class="title has-text-centered">Video</h2>
+        <div style="text-align: center;">
+          <video poster="" id="method_video" controls muted width="80%">
+            <source src="static/videos/overview_video.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!-- <div class="content has-text-justified" style="margin-top: 20px;">
+          <p>
+            This video demonstrates our method for part segmentation and motion estimation of articulated objects using dynamic 3D Gaussians. 
+            The approach jointly solves both problems by representing the object as a collection of 3D Gaussians with time-dependent transformations.
+          </p>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <!-- <p>
+              <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/"><img
+                  alt="Creative Commons License" style="border-width:0"
+                  src="https://licensebuttons.net/l/by-nc/3.0/88x31.png" />
+              </a><br />This work is licensed under a <a rel="license"
+                href="https://creativecommons.org/licenses/by-nc/4.0">Creative Commons Attribution-NonCommercial 4.0
+                International License</a> (CC-BY-NC).
+            </p> -->
+            <p>
+              This webpage is built with the template from <a href="https://github.com/nerfies/nerfies.github.io"
+                target="_blank">NeRFies</a>. We sincerely thank the authors for developing and open-sourcing this
+              template.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
