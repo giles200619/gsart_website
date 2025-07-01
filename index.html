@@ -127,7 +127,7 @@
         <div style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
           <!-- Input Video -->
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <video poster="" class="teaser-sync-video" autoplay loop controls muted width="500px" style="max-width: 341px;">
+            <video playsinline="" autoplay="" loop="" preload="" muted="" width="500px" style="max-width: 341px;">
               <source src="static/videos/a1_input.mp4" type="video/mp4">
             </video>
             <p style="margin-top: 10px; font-weight: bold; height: 20px; display: flex; align-items: center;">Input</p>
@@ -138,7 +138,7 @@
           
           <!-- Part Segmentation and Motion Video -->
           <div style="display: flex; flex-direction: column; align-items: center;">
-            <video poster="" class="teaser-sync-video" autoplay loop controls muted width="500px" style="max-width: 341px;">
+            <video playsinline="" autoplay="" loop="" preload="" muted="" width="500px" style="max-width: 341px;">
               <source src="static/videos/a1_pred.mp4" type="video/mp4">
             </video>
             <p style="margin-top: 10px; font-weight: bold; height: 20px; display: flex; align-items: center;">Per-frame Part Segmentation and Motion Estimation</p>
@@ -155,10 +155,23 @@
           // Sync the teaser videos
           function syncTeaserVideos() {
             const videos = document.querySelectorAll('.teaser-sync-video');
+            console.log('Found teaser videos:', videos.length);
             
-            videos.forEach(video => {
+            videos.forEach((video, index) => {
+              console.log(`Setting up video ${index + 1}:`, video.src);
+              
               // Ensure loop attribute is set
               video.loop = true;
+              video.setAttribute('loop', '');
+              video.setAttribute('playsinline', '');
+              
+              // Add event listeners for debugging
+              video.addEventListener('loadstart', () => console.log(`Video ${index + 1} loadstart`));
+              video.addEventListener('loadeddata', () => console.log(`Video ${index + 1} loadeddata`));
+              video.addEventListener('canplay', () => console.log(`Video ${index + 1} canplay`));
+              video.addEventListener('play', () => console.log(`Video ${index + 1} play`));
+              video.addEventListener('pause', () => console.log(`Video ${index + 1} pause`));
+              video.addEventListener('ended', () => console.log(`Video ${index + 1} ended`));
               
               video.addEventListener('play', () => {
                 videos.forEach(v => {
@@ -178,18 +191,24 @@
               
               // Ensure videos restart when they end (backup for loop attribute)
               video.addEventListener('ended', () => {
+                console.log(`Video ${index + 1} ended, restarting...`);
                 video.currentTime = 0;
-                video.play();
+                setTimeout(() => {
+                  video.play().catch(e => {
+                    console.log(`Failed to restart video ${index + 1}:`, e);
+                  });
+                }, 100);
               });
             });
 
             // Wait until all videos are ready and start them together
             Promise.all(videos.map(v => new Promise(resolve => v.onloadeddata = resolve)))
               .then(() => {
+                console.log('All teaser videos loaded, starting playback...');
                 // Start all videos at the same time
-                videos.forEach(v => {
+                videos.forEach((v, index) => {
                   v.play().catch(e => {
-                    console.log('Autoplay blocked, user interaction required');
+                    console.log(`Autoplay blocked for video ${index + 1}, user interaction required:`, e);
                   });
                 });
               });
@@ -272,108 +291,108 @@
             <tbody>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/a1/a1_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/a1/a1_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/a1/a1_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/a1/a1_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/a1/a1_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
               </tr>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/allegro/allegro_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/allegro/allegro_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/allegro/allegro_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/allegro/allegro_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/allegro/allegro_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
               </tr>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/nao/nao_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/nao/nao_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/nao/nao_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/nao/nao_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/nao/nao_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
               </tr>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/barrett/barrett_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/barrett/barrett_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/barrett/barrett_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/barrett/barrett_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-row4" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/barrett/barrett_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
@@ -391,6 +410,7 @@
             videos.forEach(video => {
               // Ensure loop attribute is set
               video.loop = true;
+              video.setAttribute('loop', '');
               
               video.addEventListener('play', () => {
                 videos.forEach(v => {
@@ -410,8 +430,13 @@
               
               // Ensure videos restart when they end (backup for loop attribute)
               video.addEventListener('ended', () => {
+                console.log('Video ended, restarting...');
                 video.currentTime = 0;
-                video.play();
+                setTimeout(() => {
+                  video.play().catch(e => {
+                    console.log('Failed to restart video:', e);
+                  });
+                }, 100);
               });
             });
 
@@ -456,81 +481,81 @@
             <tbody>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_bolt/bolt_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_bolt/bolt_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_bolt/bolt_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_bolt/bolt_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row1" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_bolt/bolt_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
               </tr>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_panda/panda_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_panda/panda_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_panda/panda_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_panda/panda_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row2" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_panda/panda_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
               </tr>
               <tr>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_icub/icub_input.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_icub/icub_gs.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_icub/icub_pred.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_icub/icub_gt.mp4" type="video/mp4">
                   </video>
                 </td>
                 <td class="has-text-centered">
-                  <video poster="" class="sync-video-occluded-row3" autoplay loop controls muted playsinline width="100%" style="max-width: 300px;">
+                  <video playsinline="" autoplay="" loop="" preload="" muted="" width="100%" style="max-width: 300px;">
                     <source src="static/videos/occluded_icub/icub_overlap.mp4" type="video/mp4">
                   </video>
                 </td>
@@ -548,6 +573,7 @@
             videos.forEach(video => {
               // Ensure loop attribute is set
               video.loop = true;
+              video.setAttribute('loop', '');
               
               video.addEventListener('play', () => {
                 videos.forEach(v => {
@@ -567,8 +593,13 @@
               
               // Ensure videos restart when they end (backup for loop attribute)
               video.addEventListener('ended', () => {
+                console.log('Video ended, restarting...');
                 video.currentTime = 0;
-                video.play();
+                setTimeout(() => {
+                  video.play().catch(e => {
+                    console.log('Failed to restart video:', e);
+                  });
+                }, 100);
               });
             });
 
@@ -598,7 +629,7 @@
       <div class="hero-body">
         <h2 class="title has-text-centered">Video</h2>
         <div style="text-align: center;">
-          <video poster="" id="method_video" controls muted width="80%">
+          <video poster="" id="method_video" controls preload muted width="80%">
             <source src="static/videos/overview_video.mp4" type="video/mp4">
           </video>
         </div>
